@@ -19,9 +19,10 @@ public:
 
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+	virtual void OnConstruction(const FTransform& Transform) override;
 
-	int PolySize = 5;
-	int VerticesQuantity = 200;
+	int PolySize = 45;
+	int VerticesQuantity = 25;
 	float UVScale = 3.0f;
 	int HeighScale = 1200;
 	int Vertices = 0;

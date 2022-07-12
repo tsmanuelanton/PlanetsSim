@@ -9,18 +9,29 @@ AChunk::AChunk()
 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
+	// Asignamos como componente raíz un ProceduralMeshComponent
 	Mesh = CreateDefaultSubobject<UProceduralMeshComponent>(TEXT("Mesh"));
 	Mesh->bUseAsyncCooking = true;
 	Mesh->SetCastShadow(false);
 	SetRootComponent(Mesh);
-	
-	SpawnChunk();
+
+	// Creamos el objeto que nos permite calcular el ruido de Perlin
+	NoiseRef = CreateDefaultSubobject<UFastNoiseWrapper>(TEXT("FastNoiseWrapper"), false);
+	NoiseRef->SetupFastNoise(EFastNoise_NoiseType::SimplexFractal, 1337, 0.0001, EFastNoise_Interp::Quintic, EFastNoise_FractalType::FBM, 6);
 }
 
 // Called when the game starts or when spawned
+
 void AChunk::BeginPlay()
 {
 	Super::BeginPlay();
+}
+
+void AChunk::OnConstruction(const FTransform& Transform)
+{
+	Super::OnConstruction(Transform);
+	
+	SpawnChunk();
 }
 
 // Called every frame
@@ -31,9 +42,11 @@ void AChunk::Tick(float DeltaTime)
 
 void AChunk::SpawnChunk()
 {
-	NoiseRef = CreateDefaultSubobject<UFastNoiseWrapper>(TEXT("FastNoiseWrapper"), false);
-	NoiseRef->SetupFastNoise(EFastNoise_NoiseType::SimplexFractal, 1337, 0.0001, EFastNoise_Interp::Quintic, EFastNoise_FractalType::FBM, 6);
 	FVector ChunkLocation = GetActorLocation();
+
+	Triangles.Empty();
+	Vertex.Empty();
+	UVs.Empty();
 
 	for (int TempY = 0; TempY < VerticesQuantity; TempY++)
 	{
