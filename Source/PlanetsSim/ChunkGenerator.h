@@ -19,7 +19,7 @@ public:
 	AChunkGenerator();
 	
 	int SpawnDistance = 6;
-	float ChunkSize = 900;
+	float ChunkSize = 1200;
 
 	TArray<FIntVector> CurrentSpawnedChunkCoords;
 	TArray<AActor*> CurrentSpawnedChunkActors;

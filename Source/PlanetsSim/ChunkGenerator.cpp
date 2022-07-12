@@ -17,6 +17,7 @@ void AChunkGenerator::BeginPlay()
 	SpawnNewChunk();
 }
 
+// Si el jugador cambia de chunk, cabiamos las coords del chunk que estamos
 void AChunkGenerator::Tick(float DeltaSeconds)
 {
 	FIntVector ChunkCoord = GetChunkCoords();
@@ -50,18 +51,21 @@ void AChunkGenerator::SpawnNewChunk()
 	{
 		for (int TempY = -SpawnDistance; TempY < SpawnDistance; TempY++)
 		{
-			FIntVector ChunkCoords = FIntVector(GetChunkCoords().X + TempX, GetChunkCoords().Y + TempY, 0);
-			float currentDistance = FVector(ChunkCoords.X * ChunkSize, ChunkCoords.Y * ChunkSize, 0).Length();
+			// Calculamos las cordenadas de un posible nuevo chunk
+			FIntVector NewChunkCoords = FIntVector(GetChunkCoords().X + TempX, GetChunkCoords().Y + TempY, 0);
+			float currentDistance = FVector(TempX * ChunkSize, TempY * ChunkSize, 0).Length();
 
-			if (currentDistance <= SpawnDistance * ChunkSize && !CurrentSpawnedChunkCoords.Contains(ChunkCoords))
+			// Si la distancia a este nuevo chunk es mayor que la distancia de spawn, lo descartamos
+			if (currentDistance <= SpawnDistance * ChunkSize && !CurrentSpawnedChunkCoords.Contains(NewChunkCoords))
 			{
-				FVector Location(ChunkCoords.X * ChunkSize, ChunkCoords.Y * ChunkSize, 0);
+				// Si el chunk está dentro de la distancia de spawn, creamos un nuevo actor Chunk en las coords calculadas
+				FVector Location(NewChunkCoords.X * ChunkSize, NewChunkCoords.Y * ChunkSize, 0);
 				FRotator Rotator(0, 0, 0);
 				FActorSpawnParameters SpawnInfo;
 				AActor* SpawnActorRef = GetWorld()->SpawnActor<AChunk>(Location, Rotator, SpawnInfo);
 
 				CurrentSpawnedChunkActors.Add(SpawnActorRef);
-				CurrentSpawnedChunkCoords.Add(ChunkCoords);
+				CurrentSpawnedChunkCoords.Add(NewChunkCoords);
 			}
 		}
 	}
@@ -71,9 +75,10 @@ void AChunkGenerator::DestroyChunks()
 {
 	for (int i = 0; i < CurrentSpawnedChunkCoords.Num(); i++)
 	{
-		FIntVector Coord = CurrentSpawnedChunkCoords[i];
+		FIntVector ChunkCoords = CurrentSpawnedChunkCoords[i];
 
-		auto distance = FVector::Distance(FVector(Coord.X * ChunkSize, Coord.Y * ChunkSize, 0),
+		// Si la distancia entre el jugador y el chunk es mayor que la distancia de spawn, lo eliminamos
+		auto distance = FVector::Distance(FVector(ChunkCoords.X * ChunkSize, ChunkCoords.Y * ChunkSize, 0),
 		                                  GetPawn()->GetActorLocation());
 		if (distance > SpawnDistance * ChunkSize)
 		{
