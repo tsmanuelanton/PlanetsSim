@@ -6,6 +6,7 @@
 #include "GameFramework/Actor.h"
 #include "FastNoiseWrapper.h"
 #include "ProceduralMeshComponent.h"
+#include "KismetProceduralMeshLibrary.h"
 #include "Chunk.generated.h"
 
 UCLASS()
@@ -21,14 +22,14 @@ public:
 	virtual void Tick(float DeltaTime) override;
 	virtual void OnConstruction(const FTransform& Transform) override;
 
-	int PolySize = 45;
-	int VerticesQuantity = 25;
+	int PolySize = 128;
+	int VerticesQuantity = 10;
 	float UVScale = 3.0f;
 	int HeighScale = 1200;
 	int Vertices = 0;
 	// int Size = 115;
 
-
+	UMaterialInterface* LandscapeMat;
 	TArray<int32> Triangles;
 	TArray<FVector> Vertex;
 	TArray<FVector2d> UVs;
