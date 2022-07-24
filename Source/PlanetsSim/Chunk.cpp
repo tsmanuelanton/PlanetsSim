@@ -18,6 +18,19 @@ AChunk::AChunk()
 	NoiseRef = CreateDefaultSubobject<UFastNoiseWrapper>(TEXT("FastNoiseWrapper"), false);
 	NoiseRef->SetupFastNoise(EFastNoise_NoiseType::SimplexFractal, 1337, 0.0001, EFastNoise_Interp::Quintic,
 	                         EFastNoise_FractalType::FBM, 6);
+
+	// static ConstructorHelpers::FObjectFinder<UMaterial> LandscapeMaterial(TEXT("/Game/BP_MatLandascape_Inst"));
+	//
+	// if (LandscapeMaterial.Succeeded())
+	// {
+	// 	LandscapeMat = LandscapeMaterial.Object;
+	// 	
+	// }
+	// else
+	// 	if(GEngine)
+	// 		GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, TEXT("Material no encontrado"));
+
+	// LandscapeMat = new UMaterialInterface();
 }
 
 // Called when the game starts or when spawned
@@ -93,4 +106,8 @@ void AChunk::SpawnChunk()
 	}
 
 	Mesh->CreateMeshSection_LinearColor(0, Vertex, Triangles, normals, UVs, VertexColors, tangents, true);
+
+	if (LandscapeMat)
+		Mesh->SetMaterial(0, LandscapeMat);
+	
 }

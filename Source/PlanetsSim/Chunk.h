@@ -25,11 +25,13 @@ public:
 	int PolySize = 128;
 	int VerticesQuantity = 10;
 	float UVScale = 3.0f;
-	int HeighScale = 1200;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Noise")
+	int HeighScale = 2000;
 	int Vertices = 0;
 	// int Size = 115;
 
-	UMaterialInterface* LandscapeMat;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UMaterial* LandscapeMat;
 	TArray<int32> Triangles;
 	TArray<FVector> Vertex;
 	TArray<FVector2d> UVs;
@@ -40,8 +42,8 @@ public:
 	virtual void SpawnChunk();
 
 protected:
-	UPROPERTY(VisibleAnywhere)
-	
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	UProceduralMeshComponent* Mesh;
 	UFastNoiseWrapper* NoiseRef;
 
