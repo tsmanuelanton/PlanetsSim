@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Chunk.h"
 #include "GameFramework/PlayerController.h"
 #include "ChunkGenerator.generated.h"
 
@@ -17,13 +18,18 @@ class PLANETSSIM_API AChunkGenerator : public APlayerController
 public:
 
 	AChunkGenerator();
-	
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Chunk Settings")
 	int SpawnDistance = 6;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Chunk Settings")
 	float ChunkSize = 1150;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Chunk Settings")
+	TSubclassOf<AActor> ChunkClass;
 
 	TArray<FIntVector> CurrentSpawnedChunkCoords;
 	TArray<AActor*> CurrentSpawnedChunkActors;
 	FIntVector LastChunkCoords;
+
 
 	virtual void BeginPlay() override;
 	virtual void Tick(float DeltaSeconds) override;

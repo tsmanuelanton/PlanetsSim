@@ -47,7 +47,7 @@ FIntVector AChunkGenerator::GetChunkCoords()
 
 void AChunkGenerator::SpawnNewChunk()
 {
-	for (int TempX = -SpawnDistance; TempX < SpawnDistance; TempX++)
+     	for (int TempX = -SpawnDistance; TempX < SpawnDistance; TempX++)
 	{
 		for (int TempY = -SpawnDistance; TempY < SpawnDistance; TempY++)
 		{
@@ -62,8 +62,7 @@ void AChunkGenerator::SpawnNewChunk()
 				FVector Location(NewChunkCoords.X * ChunkSize, NewChunkCoords.Y * ChunkSize, 0);
 				FRotator Rotator(0, 0, 0);
 				FActorSpawnParameters SpawnInfo;
-				AActor* SpawnActorRef = GetWorld()->SpawnActor<AChunk>(Location, Rotator, SpawnInfo);
-
+				AActor* SpawnActorRef = GetWorld()->SpawnActor<AActor>(ChunkClass.Get(), Location, Rotator, SpawnInfo);
 				CurrentSpawnedChunkActors.Add(SpawnActorRef);
 				CurrentSpawnedChunkCoords.Add(NewChunkCoords);
 			}
@@ -80,7 +79,7 @@ void AChunkGenerator::DestroyChunks()
 		// Si la distancia entre el jugador y el chunk es mayor que la distancia de spawn, lo eliminamos
 		auto distance = FVector::Distance(FVector(ChunkCoords.X * ChunkSize, ChunkCoords.Y * ChunkSize, 0),
 		                                  GetPawn()->GetActorLocation());
-		if (distance > SpawnDistance * ChunkSize)
+		if (distance > SpawnDistance * ChunkSize && CurrentSpawnedChunkActors[i] != NULL)
 		{
 			CurrentSpawnedChunkActors[i]->Destroy();
 			CurrentSpawnedChunkActors.RemoveAt(i);

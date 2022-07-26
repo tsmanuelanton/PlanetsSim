@@ -22,16 +22,22 @@ public:
 	virtual void Tick(float DeltaTime) override;
 	virtual void OnConstruction(const FTransform& Transform) override;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Chunk Size")
 	int PolySize = 128;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Chunk Size")
 	int VerticesQuantity = 10;
+
 	float UVScale = 3.0f;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Noise")
 	int HeighScale = 2000;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	bool bHasCollision = true;
 	int Vertices = 0;
 	// int Size = 115;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	UMaterial* LandscapeMat;
+	TSoftObjectPtr<UMaterialInterface> LandscapeMat;
 	TArray<int32> Triangles;
 	TArray<FVector> Vertex;
 	TArray<FVector2d> UVs;
