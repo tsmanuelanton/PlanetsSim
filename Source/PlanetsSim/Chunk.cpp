@@ -14,10 +14,8 @@ AChunk::AChunk()
 	Mesh->SetCastShadow(false);
 	SetRootComponent(Mesh);
 
-	// Creamos el objeto que nos permite calcular el ruido de Perlin
 	NoiseRef = CreateDefaultSubobject<UFastNoiseWrapper>(TEXT("FastNoiseWrapper"), false);
-	NoiseRef->SetupFastNoise(EFastNoise_NoiseType::SimplexFractal, 1337, 0.0001, EFastNoise_Interp::Quintic,
-	                         EFastNoise_FractalType::FBM, 6);
+
 
 }
 
@@ -43,6 +41,9 @@ void AChunk::Tick(float DeltaTime)
 
 void AChunk::SpawnChunk()
 {
+	// Creamos el objeto que nos permite calcular el ruido de Perlin
+	NoiseRef->SetupFastNoise(NoiseType, NoiseSeed, NoiseFrequency, NoiseInterp,
+							 NoiseFractalType, NoiseOctaves);
 	FVector ChunkLocation = GetActorLocation();
 
 	Triangles.Empty();

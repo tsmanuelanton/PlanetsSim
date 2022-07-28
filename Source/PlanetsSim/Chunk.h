@@ -30,7 +30,20 @@ public:
 	float UVScale = 3.0f;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Noise")
 	int HeighScale = 2000;
-
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Noise")
+	int NoiseSeed = 1337;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Noise")
+	float NoiseFrequency = 0.0001;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Noise")
+	int32 NoiseOctaves = 3;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Noise")
+	EFastNoise_NoiseType NoiseType = EFastNoise_NoiseType::SimplexFractal;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Noise")
+	EFastNoise_Interp NoiseInterp = EFastNoise_Interp::Quintic;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Noise")
+	EFastNoise_FractalType NoiseFractalType = EFastNoise_FractalType::FBM;
+	
+	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	bool bHasCollision = true;
 	int Vertices = 0;
