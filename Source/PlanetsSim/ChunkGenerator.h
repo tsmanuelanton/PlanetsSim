@@ -22,7 +22,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Chunk Settings")
 	int SpawnDistance = 6;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Chunk Settings")
-	float ChunkSize = 1150;
+	int ChunkSize = 1206;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Chunk Settings")
 	TSubclassOf<AActor> ChunkClass;
 

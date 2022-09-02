@@ -13,8 +13,8 @@ UCLASS()
 class PLANETSSIM_API AChunk : public AActor
 {
 	GENERATED_BODY()
-	
-public:	
+
+public:
 	// Sets default values for this actor's properties
 	AChunk();
 
@@ -23,9 +23,29 @@ public:
 	virtual void OnConstruction(const FTransform& Transform) override;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Chunk Size")
-	int PolySize = 128;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Chunk Size")
-	int VerticesQuantity = 10;
+	int ChunkSize = 1206;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="LOD Settings")
+	int LOD1PolySize = 1206;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="LOD Settings")
+	int LOD1VerticesQty = 2;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="LOD Settings")
+	int LOD2PolySize = 603;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="LOD Settings")
+	int LOD2VerticesQty = 3;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="LOD Settings")
+	int LOD2Distance = 45000;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="LOD Settings")
+	int LOD3PolySize = 402;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="LOD Settings")
+	int LOD3VerticesQty = 4;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="LOD Settings")
+	int LOD3Distance = 15000;
+
+	int PolySize = LOD1PolySize;
+	int VerticesQty = LOD1VerticesQty;
 
 	float UVScale = 3.0f;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Noise")
@@ -42,12 +62,13 @@ public:
 	EFastNoise_Interp NoiseInterp = EFastNoise_Interp::Quintic;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Noise")
 	EFastNoise_FractalType NoiseFractalType = EFastNoise_FractalType::FBM;
-	
-	
+
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	bool bHasCollision = true;
 	int Vertices = 0;
-	// int Size = 115;
+	int LOD = 2;
+	bool spawned = false;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TSoftObjectPtr<UMaterialInterface> LandscapeMat;
@@ -59,9 +80,11 @@ public:
 	TArray<FProcMeshTangent> tangents;
 
 	virtual void SpawnChunk();
+	virtual int DistanceToPlayer();
+	void UpdateLOD(int Distance2Player);
+
 
 protected:
-
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	UProceduralMeshComponent* Mesh;
 	UFastNoiseWrapper* NoiseRef;
