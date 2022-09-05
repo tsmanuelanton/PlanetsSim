@@ -26,6 +26,8 @@ public:
 	int ChunkSize = 1206;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="LOD Settings")
+	bool bLODActivated = true;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="LOD Settings")
 	int LOD1PolySize = 1206;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="LOD Settings")
 	int LOD1VerticesQty = 2;
@@ -62,6 +64,8 @@ public:
 	EFastNoise_Interp NoiseInterp = EFastNoise_Interp::Quintic;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Noise")
 	EFastNoise_FractalType NoiseFractalType = EFastNoise_FractalType::FBM;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Noise")
+	bool bNoiseActivated = true;
 
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)

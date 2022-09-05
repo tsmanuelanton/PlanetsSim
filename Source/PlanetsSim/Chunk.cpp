@@ -36,39 +36,39 @@ void AChunk::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	int Distance2Player = DistanceToPlayer();
-	if (Distance2Player != -1)
+	if (bLODActivated)
 	{
-		UpdateLOD(Distance2Player);
+		int Distance2Player = DistanceToPlayer();
+		if (Distance2Player != -1)
+		{
+			UpdateLOD(Distance2Player);
+		}
 	}
 }
 
 void AChunk::SpawnChunk()
 {
-	if (!spawned)
-	{
-		// Creamos el objeto que nos permite calcular el ruido de Perlin
-		NoiseRef->SetupFastNoise(NoiseType, NoiseSeed, NoiseFrequency, NoiseInterp,
-		                         NoiseFractalType, NoiseOctaves);
-	}
-
-
-	// FVector ChunkLocation = GetActorLocation();
+	// Creamos el objeto que nos permite calcular el ruido de Perlin
+	NoiseRef->SetupFastNoise(NoiseType, NoiseSeed, NoiseFrequency, NoiseInterp,
+	                         NoiseFractalType, NoiseOctaves);
 
 	Triangles.Empty();
 	Vertex.Empty();
 	UVs.Empty();
-	
+
 	UKismetProceduralMeshLibrary::CreateGridMeshWelded(VerticesQty, VerticesQty, Triangles, Vertex, UVs,
 	                                                   PolySize);
 
 
-	for (int i = 0; i < Vertex.Num(); i++)
+	if (bNoiseActivated)
 	{
-		FVector Eleme = Vertex[i];
-		Vertex[i].Set(Eleme.X, Eleme.Y,
-		              NoiseRef->GetNoise2D(Eleme.X + GetActorLocation().X,
-		                                   Eleme.Y + GetActorLocation().Y) * HeighScale);
+		for (int i = 0; i < Vertex.Num(); i++)
+		{
+			FVector Eleme = Vertex[i];
+			Vertex[i].Set(Eleme.X, Eleme.Y,
+			              NoiseRef->GetNoise2D(Eleme.X + GetActorLocation().X,
+			                                   Eleme.Y + GetActorLocation().Y) * HeighScale);
+		}
 	}
 
 	Mesh->CreateMeshSection_LinearColor(0, Vertex, Triangles, normals, UVs, VertexColors, tangents, bHasCollision);
